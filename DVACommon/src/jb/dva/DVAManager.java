@@ -2,7 +2,7 @@ package jb.dva;
 
 import jb.common.ExceptionReporter;
 import jb.common.sound.LevelMeterPanel;
-import jb.common.sound.MediaConcatenatorFfmpeg;
+import jb.common.sound.MediaConcatenator;
 import jb.common.sound.Player;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -77,6 +77,6 @@ public class DVAManager {
         ArrayList<URL> al = script.getTranslatedUrlList(soundLibraryManager.getSoundLibrary(script.getVoice()));
         File parent = (new File(targetFile)).getParentFile();
         if (parent != null && !parent.mkdirs()) logger.warn("Failed to create dir {}", parent);
-        MediaConcatenatorFfmpeg.concat(al, targetFile, temp);
+        MediaConcatenator.concat(al, targetFile, temp);
     }
 }

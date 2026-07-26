@@ -7,7 +7,7 @@
         <File name="DvaLog" fileName="${sys:java.io.tmpdir}/DVA/dva.log">
             <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger - %msg%n"/>
         </File>
-        <File name="FfmpegLog" fileName="${sys:java.io.tmpdir}/DVA/ffmpeg.log">
+        <File name="ConcatenatorLog" fileName="${sys:java.io.tmpdir}/DVA/concatenator.log">
             <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger - %msg%n"/>
         </File>
     </Appenders>
@@ -16,9 +16,9 @@
             <AppenderRef ref="Console" level="info"/>
             <AppenderRef ref="DvaLog" level="debug"/>
         </Root>
-        <Logger name="jb.common.sound.MediaConcatenatorFfmpeg" level="debug" additivity="false">
+        <Logger name="jb.common.sound.MediaConcatenator" level="debug" additivity="false">
             <AppenderRef ref="Console" level="debug"/>
-            <AppenderRef ref="FfmpegLog" level="debug"/>
+            <AppenderRef ref="ConcatenatorLog" level="debug"/>
         </Logger>
     </Loggers>
 </Configuration>

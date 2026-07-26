@@ -129,7 +129,7 @@ public class Player extends Thread {
                         audioClipListCopy.add(0, Player.class.getResource("/silence500msec.wav"));
                         audioClipListCopy.add(0, Player.class.getResource("/silence200msec.wav"));
                     }
-                    MediaConcatenatorFfmpeg.concat(audioClipListCopy, tempCacheFile.getPath(), tempDir);
+                    MediaConcatenator.concat(audioClipListCopy, tempCacheFile.getPath(), tempDir);
 
                     if (tempCacheFile.exists())
                         tempCacheFile.renameTo(cacheFile);

@@ -38,7 +38,7 @@ import org.apache.logging.log4j.Logger;
 public class DVA {
     private static final Logger logger = LogManager.getLogger(DVA.class);
     public static String VersionString;
-    public static final String CopyrightMessage = "Copyright © Jonathan Boles 1999-2025";
+    public static final String CopyrightMessage = "Copyright © Jonathan Boles 1999-2026";
 
     private DVAShell mainWindow;
     private final SoundLibraryManager soundLibraryManager;
@@ -57,7 +57,6 @@ public class DVA {
         logger.info("DVA: {}, Java: {} {}", VersionString, System.getProperty("java.version"), System.getProperty("os.arch"));
         logger.info("OS: {} {}", System.getProperty("os.name"), System.getProperty("os.version"));
         logger.info("Temp is: {}", getTemp());
-        logger.info("FFmpeg.log: {}ffmpeg.log", new File(getTemp(), "FFmpeg.log").getAbsolutePath());
         Player.emptyCache(getTemp());
 
         soundLibraryManager = new SoundLibraryManager(getTemp(), VersionString);
