@@ -43,8 +43,7 @@ dependencies {
     implementation("org.javatuples:javatuples:1.2")
     implementation("com.googlecode.soundlibs:mp3spi:1.9.5.4")
     implementation("com.googlecode.soundlibs:jlayer:1.0.1.4")
-    implementation("com.googlecode.soundlibs:tritonus-share:0.3.7.4")
-    implementation(files("jars/swixml.jar", "jars/jdom.jar", "jars/tritonus_remaining.jar"))
+    implementation("org.swixml:swixml:1.5.144")
 }
 
 application {
