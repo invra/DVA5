@@ -18,14 +18,8 @@ Set up a departure screen showing your regular commute, create wacky announcemen
 
 Head to the [Releases](https://github.com/jaboles/DVA5/releases) page to download the latest version.
 
-Pick the appropriate download file for your system:
-
-- .exe : Windows
-- .dmg : Mac
-- .deb : Linux
-- x86_64 : Intel/AMD processors - Windows PCs, Intel Macs, etc.
-- aarch64 : ARM64 processors - Apple Silicon (M1/M2/M3), Raspberry Pi's, etc. 
-
 [![Build status](https://jonathanboles.visualstudio.com/DVA/_apis/build/status/Build)](https://jonathanboles.visualstudio.com/DVA/_build/latest?definitionId=2)
+
+### Building
 
 Build instructions for the curious minded tinkerer: https://raw.githack.com/jaboles/DVA5/master/building.html
