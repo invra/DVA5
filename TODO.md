@@ -2,16 +2,13 @@
 
 List of stuff to make this easier to maintain
 
-- Move from ant build system
-  * I haven't heard of ant in a really long time
-  * Reasonable to do
+- Switching to Gradle
+  * platform builders via Just, so that Gradle only builds the binary
+  * protoc PlasmaCommon/src/jb/plasma/gtfs/gtfs-realtime_1007_extension.proto -> PlasmaCommon/src/com/google/transit/realtime/GtfsRealtime1007Extension.java
+  * version.txt generation
 
-- Fix easier issues on main github
-  * better to get some stuff fixed whilst at it
-
-- Scan through codebase for bad code
-  * I am considering doing a semi-port to Kotlin, so that the code expresses less, for more
+- Github CI
+  * testing out to see if it's a reasonable switch to consider
 
 - Java 25
-  * again same reason as ant build system
-  * less code to be expreased
+  * might mean for easier maintenance

@@ -1,8 +1,9 @@
+.gradle/
+build/
+
+version.txt
 .DS_Store
-build
-output
 azure.secret
 *.iws
 *.bak
 Thumbs.db
-version.txt
