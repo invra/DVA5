@@ -54,7 +54,9 @@ public class DVA {
             VersionString = "0.0.0";
         }
 
-        logger.info("DVA: {}, Java: {} {}", VersionString, System.getProperty("java.version"), System.getProperty("os.arch"));
+        logger.info("DVA: {}", VersionString);
+        logger.info("Java: {}", System.getProperty("java.version"));
+        logger.info("Arch: {}", System.getProperty("os.arch"));
         logger.info("OS: {} {}", System.getProperty("os.name"), System.getProperty("os.version"));
         logger.info("Temp is: {}", getTemp());
         Player.emptyCache(getTemp());
@@ -287,8 +289,6 @@ public class DVA {
         } catch (Exception e) {
             // wtf?? Impossible situation
         }
-
-        logger.info("argc: {}", args.length);
 
         try {
             // Run the program in different ways depending on command line switches
