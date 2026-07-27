@@ -1,6 +1,7 @@
 plugins {
     java
     application
+    kotlin("jvm") version "2.2.0"
 }
 
 group = "com.example"
@@ -8,7 +9,7 @@ version = "1.0.0"
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
+        languageVersion.set(JavaLanguageVersion.of(25))
     }
 }
 
@@ -17,6 +18,9 @@ sourceSets {
         java {
             setSrcDirs(listOf("DVAApp/src", "DVACommon/src", "PlasmaCommon/src", "Core/src"))
             exclude("jb/common/nativefilechooser/**")
+        }
+        kotlin {
+            setSrcDirs(listOf("DVAApp/src", "DVACommon/src", "PlasmaCommon/src", "Core/src"))
         }
         resources {
             setSrcDirs(emptyList<String>())

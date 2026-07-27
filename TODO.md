@@ -9,6 +9,3 @@ List of stuff to make this easier to maintain
 
 - Github CI
   * testing out to see if it's a reasonable switch to consider
-
-- Java 25
-  * might mean for easier maintenance
