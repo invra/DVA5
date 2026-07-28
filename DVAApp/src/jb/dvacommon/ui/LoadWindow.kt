@@ -6,6 +6,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.runtime.Composable
@@ -16,6 +17,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.awt.ComposePanel
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -30,11 +33,9 @@ import jb.common.sound.Player
 import jb.dvacommon.DVA
 import org.jetbrains.jewel.foundation.theme.JewelTheme
 import org.jetbrains.jewel.intui.standalone.theme.IntUiTheme
-import org.jetbrains.jewel.intui.standalone.theme.lightThemeDefinition
 import org.jetbrains.jewel.ui.component.DefaultButton
 import org.jetbrains.jewel.ui.component.OutlinedButton
 import org.jetbrains.jewel.ui.component.Text
-import androidx.compose.ui.layout.ContentScale
 import java.awt.Desktop
 import java.awt.Dimension
 import java.net.URI
@@ -82,17 +83,17 @@ class LoadWindow {
 
         SwingUtilities.invokeLater {
             val width = 650
-            val height = 434
+            val height = if (showCloseButton) 610 else 434
 
             val dialog = JDialog().apply {
                 isUndecorated = true
                 size = Dimension(width, height)
                 setLocationRelativeTo(null)
                 isResizable = false
-                
+
                 val composePanel = ComposePanel()
                 composePanel.setContent {
-                    IntUiTheme(isDark = false) {
+                    IntUiTheme(isDark = true) {
                         Content()
                     }
                 }
@@ -135,62 +136,90 @@ class LoadWindow {
             enter = fadeIn(animationSpec = tween(350)),
             exit = fadeOut(animationSpec = tween(350))
         ) {
-            Box(
+            Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(JewelTheme.globalColors.panelBackground)
             ) {
-                Image(
-                    painter = painterResource("splash_train.jpg"),
-                    contentDescription = "Splash Image",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier.fillMaxSize()
-                )
-
-                Text(
-                    text = "DVA",
-                    color = Color.White,
-                    fontSize = 72.sp,
-                    fontWeight = FontWeight.Bold,
-                    fontFamily = FontFamily.SansSerif,
-                    modifier = Modifier.align(Alignment.Center)
-                )
-
-                Text(
-                    text = statusText,
-                    color = Color.White,
-                    fontSize = 14.sp,
+                Box(
                     modifier = Modifier
-                        .align(Alignment.BottomStart)
-                        .padding(start = 12.dp, bottom = 12.dp)
-                )
+                        .fillMaxWidth()
+                        .height(434.dp)
+                        .pointerInput(Unit) {
+                            detectDragGestures { change, dragAmount ->
+                                change.consume()
+                                dialog?.let { d ->
+                                    val currentLoc = d.location
+                                    d.setLocation(
+                                        currentLoc.x + dragAmount.x.toInt(),
+                                        currentLoc.y + dragAmount.y.toInt()
+                                    )
+                                }
+                            }
+                        }
+                ) {
+                    Image(
+                        painter = painterResource("splash_train.jpg"),
+                        contentDescription = "Splash Image",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier.fillMaxSize()
+                    )
 
-                if (!showCloseButtonState) {
                     Text(
-                        text = "${DVA.VersionString} ($buildNumber)",
+                        text = "DVA",
+                        color = Color.White,
+                        fontSize = 72.sp,
+                        fontWeight = FontWeight.Bold,
+                        fontFamily = FontFamily.SansSerif,
+                        modifier = Modifier.align(Alignment.Center)
+                    )
+
+                    Text(
+                        text = statusText,
                         color = Color.White,
                         fontSize = 14.sp,
                         modifier = Modifier
-                            .align(Alignment.BottomEnd)
-                            .padding(end = 12.dp, bottom = 12.dp)
+                            .align(Alignment.BottomStart)
+                            .padding(start = 12.dp, bottom = 12.dp)
                     )
+
+                    if (!showCloseButtonState) {
+                        Text(
+                            text = "${DVA.VersionString} ($buildNumber)",
+                            color = Color.White,
+                            fontSize = 14.sp,
+                            modifier = Modifier
+                                .align(Alignment.BottomEnd)
+                                .padding(end = 12.dp, bottom = 12.dp)
+                        )
+                    }
                 }
 
                 if (showCloseButtonState) {
                     Column(
                         modifier = Modifier
-                            .align(Alignment.BottomCenter)
                             .fillMaxWidth()
-                            .background(Color.Black.copy(alpha = 0.55f))
-                            .padding(16.dp),
+                            .weight(1f)
+                            .background(JewelTheme.globalColors.panelBackground)
+                            .padding(12.dp),
                         verticalArrangement = Arrangement.SpaceBetween
                     ) {
                         AboutTextContent(buildNumber)
 
                         Row(
                             modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.End
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
                         ) {
+                            OutlinedButton(
+                                onClick = {
+                                    val licenseWindow = LicenseWindow()
+                                    licenseWindow.showSubsequentTimes()
+                                }
+                            ) {
+                                Text("License")
+                            }
+
                             DefaultButton(onClick = { dispose() }) {
                                 Text("Close")
                             }
@@ -203,26 +232,53 @@ class LoadWindow {
 
     @Composable
     private fun AboutTextContent(buildNum: String) {
-        val annotatedString = buildAnnotatedString {
-            append("Digital Voice Announcement System\n")
-            append("Version ${DVA.VersionString} (Build $buildNum)\n\n")
-            append("For sound libraries and updates visit: ")
+        val textColor = Color(0xFFDDDDDD)
+        val mutedColor = Color(0xFFBBBBBB)
+        val linkColor = Color(0xFF3582E1)
 
-            pushStringAnnotation(tag = "URL", annotation = "http://railwavs.railmedia.com.au")
-            withStyle(style = SpanStyle(color = Color(0xFF4080FF), textDecoration = TextDecoration.Underline)) {
-                append("railwavs.railmedia.com.au")
+        val annotatedString = buildAnnotatedString {
+            withStyle(style = SpanStyle(color = textColor, fontWeight = FontWeight.Bold, fontSize = 13.sp)) {
+                append("DVA Version ${DVA.VersionString} Build $buildNum ")
+            }
+            withStyle(style = SpanStyle(color = mutedColor, fontSize = 12.sp)) {
+                append("(Java ${System.getProperty("java.version")} ${System.getProperty("os.arch")})\n")
+            }
+
+            withStyle(style = SpanStyle(color = textColor, fontSize = 12.sp)) {
+                append("${DVA.CopyrightMessage}\n")
+                append("Contact: ")
+            }
+
+            pushStringAnnotation(tag = "URL", annotation = "mailto:jaboles@fastmail.fm")
+            withStyle(style = SpanStyle(color = linkColor, textDecoration = TextDecoration.Underline, fontSize = 12.sp)) {
+                append("jaboles@fastmail.fm")
             }
             pop()
 
-            append("\nContact: jaboles@fastmail.fm\n")
-            append("${DVA.CopyrightMessage}\n")
-            append("Java: ${System.getProperty("java.version")} (${System.getProperty("os.arch")})\n")
+            withStyle(style = SpanStyle(color = textColor, fontSize = 12.sp)) {
+                append(". GitHub: ")
+            }
 
             pushStringAnnotation(tag = "URL", annotation = "https://github.com/jaboles/DVA5")
-            withStyle(style = SpanStyle(color = Color(0xFF4080FF), textDecoration = TextDecoration.Underline)) {
-                append("GitHub Repository")
+            withStyle(style = SpanStyle(color = linkColor, textDecoration = TextDecoration.Underline, fontSize = 12.sp)) {
+                append("https://github.com/jaboles/DVA5")
             }
             pop()
+
+            withStyle(style = SpanStyle(color = textColor, fontSize = 12.sp)) {
+                append("\nSounds copyright ©: Glenn Jackson-Bethell, Paul McCabe, Winston Yang, Ben Cousins, PKBeam, Charlie Munns.\n")
+                append("Used with permission. Original site: ")
+            }
+
+            pushStringAnnotation(tag = "URL", annotation = "http://railwavs.railmedia.com.au")
+            withStyle(style = SpanStyle(color = linkColor, textDecoration = TextDecoration.Underline, fontSize = 12.sp)) {
+                append("http://railwavs.railmedia.com.au")
+            }
+            pop()
+
+            withStyle(style = SpanStyle(color = textColor, fontSize = 12.sp)) {
+                append("\nOriginal splash screen design: Winston Yang")
+            }
         }
 
         ClickableText(
