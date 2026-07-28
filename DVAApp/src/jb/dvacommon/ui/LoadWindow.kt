@@ -120,7 +120,6 @@ class LoadWindow {
                 LoadWindow::class.java.getResource("/start4-D.f.mp3"),
                 LoadWindow::class.java.getResource("/start4-V.f.mp3"),
                 LoadWindow::class.java.getResource("/start4-A.f.mp3"),
-                LoadWindow::class.java.getResource("/start4-5.f.mp3")
             )
             val p = Player(startSoundList, null, DVA.getTemp())
             p.start()
