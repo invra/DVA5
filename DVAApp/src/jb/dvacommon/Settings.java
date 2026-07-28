@@ -103,13 +103,13 @@ public class Settings {
             return defaultValue;
     }
 
-    public static boolean isLicenceRead() {
-        String licenceReadAtVersion = prefs.get("licenceReadAtVersion", "");
-        return !licenceReadAtVersion.isEmpty() && Utilities.compareVersion(DVA.VersionString, licenceReadAtVersion) <= 0;
+    public static boolean isLicenseRead() {
+        String licenseReadAtVersion = prefs.get("licenseReadAtVersion", "");
+        return !licenseReadAtVersion.isEmpty() && Utilities.compareVersion(DVA.VersionString, licenseReadAtVersion) <= 0;
     }
 
-    public static void setLicenceRead() {
-        prefs.put("licenceReadAtVersion", DVA.VersionString);
+    public static void setLicenseRead() {
+        prefs.put("licenseReadAtVersion", DVA.VersionString);
         try {
             prefs.flush();
         } catch (BackingStoreException e) { e.printStackTrace(System.err); }

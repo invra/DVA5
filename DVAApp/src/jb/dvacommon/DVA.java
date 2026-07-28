@@ -22,7 +22,7 @@ import jb.dva.SoundLibraryManager;
 import jb.dvacommon.ui.ProgressWindow;
 import jb.dva.Script;
 import jb.dvacommon.ui.DVAShell;
-import jb.dvacommon.ui.LicenceWindow;
+import jb.dvacommon.ui.LicenseWindow;
 import jb.dvacommon.ui.LoadWindow;
 import jb.plasma.gtfs.GtfsGenerator;
 import jb.plasma.gtfs.GtfsTimetable;
@@ -70,12 +70,11 @@ public class DVA {
         {
             fetchSoundJars();
         }
-        showLicenceIfNotRead();
+        showLicenseIfNotRead();
 
         final LoadWindow lw = new LoadWindow();
         if (showLoadingProgress) {
-            boolean fade = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().isWindowTranslucencySupported(GraphicsDevice.WindowTranslucency.TRANSLUCENT);
-            lw.show(false, showMainWindow, fade);
+            lw.show(false, showMainWindow);
         }
 
         logger.info("Loading sound libraries");
@@ -335,19 +334,19 @@ public class DVA {
         }
     }
 
-    private static void showLicenceIfNotRead()
+    private static void showLicenseIfNotRead()
     {
-        // Show the licence if it hasn't been displayed for this version.
-        if (!Settings.isLicenceRead())
+        // Show the license if it hasn't been displayed for this version.
+        if (!Settings.isLicenseRead())
         {
-            LicenceWindow licenceWindow = new LicenceWindow();
-            licenceWindow.showFirstTime();
-            if (!licenceWindow.accepted())
+            LicenseWindow licenseWindow = new LicenseWindow();
+            licenseWindow.showFirstTime();
+            if (!licenseWindow.accepted())
             {
                 System.exit(0);
             }
 
-            Settings.setLicenceRead();
+            Settings.setLicenseRead();
         }
     }
 
