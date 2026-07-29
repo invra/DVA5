@@ -291,7 +291,7 @@ public class DVAShell
                 else
                 {
                     File executable = new File(FileUtilities.getJarFolder(DVA.class), "dva.exe");
-                    Runtime.getRuntime().exec("cmd.exe /c start cmd /c \"" + executable.getPath() + "\" && pause");
+                    new ProcessBuilder("cmd.exe", "/c", "start", "cmd", "/c", executable.getPath() + "&& pause").start();
                 }
             } catch (IOException ex) {
                 ExceptionReporter.reportException(ex);

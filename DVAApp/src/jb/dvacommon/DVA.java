@@ -2,7 +2,7 @@ package jb.dvacommon;
 import java.awt.*;
 import java.io.File;
 import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -358,8 +358,12 @@ public class DVA {
         pw.show();
         try {
             new CloudSoundJarFetcher(
-                new URL(new URL("https://dvaupdate.blob.core.windows.net/"), WAzureUpdater.SoundJarsContainerName + "/"),
-                new URL(new URL("https://dvaupdate.blob.core.windows.net/"), WAzureUpdater.MetadataContainerName + "/" + WAzureUpdater.SoundJarsList))
+                URI.create("https://dvaupdate.blob.core.windows.net/")
+                   .resolve(WAzureUpdater.SoundJarsContainerName + "/")
+                   .toURL(),
+                URI.create("https://dvaupdate.blob.core.windows.net/")
+                   .resolve(WAzureUpdater.MetadataContainerName + "/" + WAzureUpdater.SoundJarsList)
+                   .toURL())
             .doFetch(pa)
             .join();
         } catch (MalformedURLException | InterruptedException ignored) {
